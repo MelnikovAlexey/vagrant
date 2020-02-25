@@ -1,8 +1,9 @@
 #include <tunables/global>
 
 
-profile nginx flags=(attach_disconnected,mediate_deleted) {
+/usr/sbin/nginx flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
+  #include <abstractions/apache2-common>
 
   #network inet tcp,
   #network inet udp,
@@ -36,7 +37,8 @@ profile nginx flags=(attach_disconnected,mediate_deleted) {
   audit /** w,
 
   /run/nginx.pid w,
-
+  /var/www/html r,
+  /var/log/nginx/* rw,
   /usr/sbin/nginx ix,
 
   deny /bin/dash mrwklx,
