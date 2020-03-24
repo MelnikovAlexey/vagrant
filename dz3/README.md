@@ -1,4 +1,5 @@
-# OTUS: LINUX Security. Homework Objective
+# OTUS: LINUX Security. Homework 
+## Обновная цель
 Упаковать приложение в docker провести харденинг собранного образа, чтобы на выходе образ проходил проверки - cis audit
 
 ## Подготовка
