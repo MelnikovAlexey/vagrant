@@ -144,7 +144,7 @@ sudo usermod -aG docker vagrant >$NULL
 echo "==> Сборка образа"
 IMAGE_NAME=websocket-sample:1.0
 cd /vagrant
-#sudo docker build -t ${IMAGE_NAME} . 
+sudo docker build -t ${IMAGE_NAME} . >$NULL
 
 echo "==> DOCKER-BENCH-SECURITY"
 echo "==> DOCKER-BENCH-SECURITY: скачиваем образ docker/docker-bench-security"
