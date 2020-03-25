@@ -20,7 +20,8 @@ if [[ ! $(df | grep ${DISK}) ]]; then
   parted -s -a opt $DISK mkpart primary ext4 0% 100%
   mkfs.ext4 "${DISK}1" >$NULL
   mkdir -p $DIR
-  mount "${DISK}1" $DIR
+  sudo echo "${DISK}1 ${DIR} ext4 defaults 0 0" >> /etc/fstab
+  sudo mount -a
 fi
 
 echo "==> Update the apt package index:"
