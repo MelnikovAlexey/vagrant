@@ -1,14 +1,4 @@
-#DISK=/dev/sdb
-#DIR=/var/lib/docker
-#if [[ ! $(df | grep ${DISK}) ]]; then
-#  parted -s $DISK mklabel msdos
-#  parted -s -a opt $DISK mkpart primary ext4 0% 100%
-#  mkfs.ext4 "${DISK}1" >$NULL
-#  mkdir -p $DIR
-#  mount "${DISK}1" $DIR
-#fi
-
-
+#!/usr/bin/env bash
 gen_pass() {
     echo $(cat /dev/urandom | tr -d -c 'a-zA-Z0-9' | fold -w 16 | head -1)
 }
@@ -82,9 +72,6 @@ if [[ ! -e /etc/docker/policies ]]; then
      echo ""
      echo "allow = true"
    } > /etc/docker/policies/authz.rego 
-   echo "==> Устанавливаем плагин opa-docker-authz"
-	sudo docker plugin install --grant-all-permissions --alias opa-docker-authz openpolicyagent/opa-docker-authz-v2:0.5 opa-args="-policy-file /etc/docker/policies/authz.rego" >$NULL
-	sudo docker plugin ls
 fi
  
  echo "==> Конфигурируем docker"
@@ -133,14 +120,21 @@ fi
 echo "==> Создаем subuid и subgid"
 echo "vagrant:231072:65536" >/etc/subuid
 echo "vagrant:231072:65536" >/etc/subgid
-echo "==> Копируем daemon.json"
+echo "==> Копируем первичную конфигурационный файл docker"
 cp /vagrant/daemon.json /etc/docker
-chmod 0644 /etc/docker/daemon.json
 echo "==> Перезапускаем docker"
 sudo systemctl restart docker
 
 echo "==> Добавляем пользователя vagrant в группу docker"
 sudo usermod -aG docker vagrant >$NULL
+echo "==> Устанавливаем плагин opa-docker-authz"
+	sudo docker plugin install --grant-all-permissions --alias opa-docker-authz openpolicyagent/opa-docker-authz-v2:0.5 opa-args="-policy-file /opa/policies/authz.rego" >$NULL
+	sudo docker plugin ls
+	echo "==> Копируем конечный конфигурационный файл docker"
+cp /vagrant/daemon2.json /etc/docker/daemon.json
+chmod 0644 /etc/docker/daemon.json
+echo "==> Перезапускаем docker"
+sudo kill -HUP $(pidof dockerd)
 
 echo "==> Сборка образа"
 IMAGE_NAME=websocket-sample:1.0
