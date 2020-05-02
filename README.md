@@ -38,6 +38,8 @@ ausearch -c 'nginx' --raw | audit2allow -M nginx-custom-port
 semodule -i nginx-custom-port.pp
 ```
 [Результат](https://github.com/MelnikovAlexey/vagrant/blob/hw-3/part1/nginxV3_result.png)
+
 Проверяем работоспособность nginx
+
 [Скриншот](https://github.com/MelnikovAlexey/vagrant/blob/hw-3/part1/nginxV3.png)
 
