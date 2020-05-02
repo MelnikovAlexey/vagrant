@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+	config.vm.define "centos1" do |subconfig|
+		subconfig.vm.box = "centos/7"
+		subconfig.vm.hostname="centos1"
+		subconfig.vm.network :private_network, ip: "192.168.56.11"
+		subconfig.vm.network "forwarded_port", guest:8088, host:8081
+		subconfig.vm.provider "virtualbox" do |vb|
+			vb.memory = "512"
+			vb.cpus = "1"
+		end 
+		subconfig.vm.provision "shell" do |sh|
+			sh.path = "./provisionV1.sh"   
+		end
+	end
+	config.vm.define "centos2" do |subconfig|
+		subconfig.vm.box = "centos/7"
+		subconfig.vm.hostname="centos2"
+		subconfig.vm.network :private_network, ip: "192.168.56.12"
+		subconfig.vm.network "forwarded_port", guest:8088, host:8082
+		subconfig.vm.provider "virtualbox" do |vb|
+			vb.memory = "512"
+			vb.cpus = "1"
+		end
+		subconfig.vm.provision "shell" do |sh|
+			sh.path = "./provisionV2.sh"
+		end
+    end
+    config.vm.define "centos3" do |subconfig|
+		subconfig.vm.box = "centos/7"
+		subconfig.vm.hostname="centos3"
+		subconfig.vm.network :private_network, ip: "192.168.56.13"
+		subconfig.vm.network "forwarded_port", guest:8088, host:8083
+		subconfig.vm.provider "virtualbox" do |vb|
+			vb.memory = "512"
+			vb.cpus = "1"
+		end
+		subconfig.vm.provision "shell" do |sh|
+			sh.path = "./provisionV3.sh" 
+		end
+    end
+end
