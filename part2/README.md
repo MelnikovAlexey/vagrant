@@ -66,6 +66,34 @@ allow named_t sysctl_net_t:dir search;
 allow named_t sysctl_net_t:file { getattr open read };
 ```
 
+Но в этом случае, если злоумышленник поломает named (а ведь этого исключать нельзя, т.к. named видет снаружи), то он сможет писать в /etc и стало быть сможет получить контроль над хостом ns01. Такого ответственный инженер допустить не позволит, поэтому необходим другой вариант решения проблемы.
+
+Почитав документацию по Bind инженер нигде не находит упоминания о named в /etc. Немного подумав инженер решает проанализировать файловые контексты named на ns01:
+
+```bash
+[vagrant@ns01 etc]$ sudo semanage fcontext -l | grep named
+/etc/rndc.*                                        regular file       system_u:object_r:named_conf_t:s0 
+/etc/unbound(/.*)?                                 all files          system_u:object_r:named_conf_t:s0 
+/var/named/chroot(/.*)?                            all files          system_u:object_r:named_conf_t:s0 
+/etc/named\.rfc1912.zones                          regular file       system_u:object_r:named_conf_t:s0 
+/var/named/chroot/etc/named\.rfc1912.zones         regular file       system_u:object_r:named_conf_t:s0 
+/etc/named\.conf                                   regular file       system_u:object_r:named_conf_t:s0 
+/var/named/named\.ca                               regular file       system_u:object_r:named_conf_t:s0 
+/etc/named\.root\.hints                            regular file       system_u:object_r:named_conf_t:s0 
+/var/named/chroot/etc/named\.conf                  regular file       system_u:object_r:named_conf_t:s0 
+/etc/named\.caching-nameserver\.conf               regular file       system_u:object_r:named_conf_t:s0 
+/var/named/chroot/var/named/named\.ca              regular file       system_u:object_r:named_conf_t:s0 
+/var/named/chroot/etc/named\.root\.hints           regular file       system_u:object_r:named_conf_t:s0 
+/var/named/chroot/etc/named\.caching-nameserver\.conf regular file       system_u:object_r:named_conf_t:s0 
+/var/named(/.*)?                                   all files          system_u:object_r:named_zone_t:s0 
+/var/named/chroot/var/named(/.*)?                  all files          system_u:object_r:named_zone_t:s0 
+```
+
+и инженеру приходит светлая мысль, может конфигурация named для ddns содержит опечатку, и достаточно просто ее исправить: в named.conf в разделах для ddns поменять директорию, где размещается файл зоны с /etc/named/dynamic на /var/named/dynamic
+
+далее достаточно только пересобрать образ.
+
+
 #### Стенд
 
 В provision внесены изменения, устраняющие проблему.

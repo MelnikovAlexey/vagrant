@@ -98,19 +98,19 @@
       group: named
       mode: 0670
 
-  - name: copy selinux rules to server
-    copy: 
-      src: files/named.te
-      dest: /usr/src/
+#  - name: copy selinux rules to server
+#    copy: 
+#      src: files/named.te
+#      dest: /usr/src/
 
-  - name: load selinux rules
-    command: "{{ item }}"
-    args:
-      chdir: /usr/src
-    with_items:
-      - checkmodule -M -m named.te -o named.mod
-      - semodule_package -o named.pp -m named.mod
-      - semodule -i named.pp
+#  - name: load selinux rules
+#    command: "{{ item }}"
+#    args:
+#      chdir: /usr/src
+#    with_items:
+#      - checkmodule -M -m named.te -o named.mod
+#      - semodule_package -o named.pp -m named.mod
+#      - semodule -i named.pp
 
   - name: ensure named is running and enabled
     systemd:
