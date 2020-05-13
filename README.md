@@ -67,7 +67,9 @@ sudo cryptsetup luksDump /dev/sdb1 | grep Slot
 rm my.key
 ```
 ![screen13](https://github.com/MelnikovAlexey/vagrant/blob/hw-10/screen/screen13.png)
+
 ![screen14](https://github.com/MelnikovAlexey/vagrant/blob/hw-10/screen/screen14.png)
+
 ![screen15](https://github.com/MelnikovAlexey/vagrant/blob/hw-10/screen/screen15.png)
 
 И тогда нам придется выполнять пункт 10 поскольку если мы выполним команду 
