@@ -1,6 +1,8 @@
 # OTUS OSSIM HW
 
 ### 1. Отчет сканирования OSSIM до и после закрытия уязвимости
+
+
 Закрыта обнаруженная уязвимость SSH:
 ```bash
 SSH Brute Force Logins With Default Credentials Reporting
