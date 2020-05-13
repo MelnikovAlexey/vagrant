@@ -4,7 +4,7 @@
 ```bash
 dd if=/dev/urandom of=/home/vagrant/my.key bs=1 count=1024  
 ```
-https://github.com/MelnikovAlexey/vagrant/blob/hw-10/screen/screen1.png
+![screen1](https://github.com/MelnikovAlexey/vagrant/blob/hw-10/screen/screen1.png)
 ### 2. Создать на основе созданного ключа криптоконтейнер
 ```bash
 sudo cryptsetup -v -s 512 luksFormat /dev/sdb1 /home/vagrant/my.key  
