@@ -2,15 +2,18 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
-  
-  config.vm.provider "virtualbox" do |vb|
-    path_to_vdi = "./satadisk1.vdi"
-    unless File.exist?(path_to_vdi)
-      vb.customize ["createhd", "--filename", path_to_vdi, "--size", 10 * 1024]
-      vb.customize ["storagectl", :id, "--name", "SATA", "--add", "sata"]
-    end  
-    vb.customize ["storageattach", :id, "--storagectl", "SATA", "--port", 1, "--device", 0, "--type", "hdd", "--medium",  path_to_vdi]
-  end
-   config.vm.provision "shell", path: "provision.sh"
+	config.vm.define "kali" do |subconfig|
+		subconfig.vm.box = "kalilinux/rolling"
+		subconfig.vm.box_version = "2020.2.1"
+		subconfig.vm.hostname="kali"
+		subconfig.vm.network :private_network, ip: "192.168.55.11"   
+		subconfig.vm.provision "shell", path: "provision.sh"
+		subconfig.vm.box_check_update = false
+		subconfig.vm.boot_timeout = 600
+		subconfig.vm.provider "virtualbox" do |vb|      
+			#vb.memory = "1024"      
+			#vb.cpus = "1"   
+			vb.gui = false
+		end
+	end
 end
