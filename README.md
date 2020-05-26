@@ -1,24 +1,18 @@
-# OTUS Volatility
+# OTUS Wazuh
 
-###1. Task 1
-подробности работы с дампом памяти отражено в отчете task_1_report.pdf
+### Отчет по работе с Wazuh
 
-###2. Task 2
-подробности работы с дампом памяти отражено в отчете task_2_report.pdf 
-
-
-### Общие команды
-
-### task1
-
+[Подробный отчет] () 
+[Конфигурационный файл wazuh-manager] ()
+### Настройка active response на брутфорс ssh в wazuh
+В wazuh уже имеются готовые скрипты для active response, находятся в каталоге /var/ossec/active-response/bin/. Для автоматической блокировки атакующего ip в файл /var/ossec/etc/ossec.conf необходимо добавить правило:
 ```shell
-cp /vagrant/task1/Ubuntu_4.15.0-72-generic_profile.zip /usr/lib/python2.7/dist-packages/volatility/plugins/overlays/linux
-wget https://raw.githubusercontent.com/cuckoosandbox/community/master/data/yara/shellcode/metasploit.yar
-volatility --profile=LinuxUbuntu_4_15_0-72-generic_profilex64 --filename=/vagrant/task1/memory.vmem <command>
+<active-response>
+    <command>firewall-drop</command>
+    <location>local</location>
+    <rules_id>5712|5720</rules_id>
+    <timeout>1800</timeout>
+</active-response>
 ```
+firewall-drop - название скрипта, rules id - идентификатор события безопасности "sshd: brute force trying to get access to the system.|sshd: Multiple authentication failures.". Первое правило срабатывает если злоумышленник не знает логин для ssh.  Второе правило затруднит возможность подобрать пароль если по какой то причине злоумышленник смог узнать имя пользователя для ssh. При данной настройке блокировка будет производиться только на хосте, который подвержен атаке.
 
-### task2
-```shell
-sudo cp /vagrant/Ubuntu16.04_4.4.0_116_generic-39158-dea5d1.zip /usr/lib/python2.7/dist-packages/volatility/plugins/overlays/linux
-volatility --profile=LinuxUbuntu16_04_4_4_0_116_generic-39158-dea5d1x64 --filename=/vagrant/task2/image <command>
-```
