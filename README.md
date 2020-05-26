@@ -2,9 +2,12 @@
 
 ### Отчет по работе с Wazuh
 
-[Подробный отчет] () 
-[Конфигурационный файл wazuh-manager] ()
+[Подробный отчет](https://github.com/MelnikovAlexey/vagrant/blob/hw-8/WAZUH_Report.pdf) 
+
+[Конфигурационный файл wazuh-manager](https://github.com/MelnikovAlexey/vagrant/blob/hw-8/ossec.conf)
+
 ### Настройка active response на брутфорс ssh в wazuh
+
 В wazuh уже имеются готовые скрипты для active response, находятся в каталоге /var/ossec/active-response/bin/. Для автоматической блокировки атакующего ip в файл /var/ossec/etc/ossec.conf необходимо добавить правило:
 ```shell
 <active-response>
