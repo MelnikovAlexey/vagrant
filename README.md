@@ -2,11 +2,11 @@
 
 ### 1. Task 1
 
-подробности работы с дампом памяти отражено в отчете task_1_report.pdf
+подробности работы с дампом памяти отражено в [отчете task_1_report.pdf] (https://github.com/MelnikovAlexey/vagrant/blob/hw-7/Task_1_report.pdf)
 
 ### 2. Task 2
 
-подробности работы с дампом памяти отражено в отчете task_2_report.pdf 
+подробности работы с дампом памяти отражено в [отчете task_2_report.pdf ] (https://github.com/MelnikovAlexey/vagrant/blob/hw-7/Task_2_report.pdf) 
 
 
 ### Общие команды
